@@ -122,7 +122,7 @@ else
                 mdi=im_adjust(ha,mdi,radius_ha,radius_mdi);
             end
             figure('name','处理后的Ha');
-            subplot(1,2,1);
+            subplot(1,2,1)
             imshow(ha);
             figure('name','处理后的MDI');
             imshow(mdi);

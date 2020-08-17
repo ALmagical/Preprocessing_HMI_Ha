@@ -22,7 +22,7 @@ else
         [h_hmi,w_hmi]=size(hmi(:,:,1));
         [h_ha,w_ha]=size(ha);
         %
-        gaus_kernel = fspecial('gaussian',[10,10],1);
+        gaus_kernel = fspecial('gaussian',[5,5],1);
         ha_filter = imfilter(ha,gaus_kernel,'replicate');
         %
         ha_ulc=Luminance_Correction(ha_filter);
