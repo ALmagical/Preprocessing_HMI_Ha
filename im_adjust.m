@@ -16,3 +16,5 @@ if radius_ratio > 1  %比例不为1时进行调整，为1的话不进行任何操作
         im_result=imcrop(im_b,[x_min,y_min,w_a-1,h_a-1]); %imcrop后面四个参数为x，y的最小值以及图像的宽度和高度
     end
 end
+%figure('name','调整大小后的图像');
+%imshow(im_result);

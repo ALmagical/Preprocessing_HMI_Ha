@@ -4,16 +4,14 @@
 %对配准后的HA图像和HMI图像进行叠加   ？？？稍后将程序整合下
 %目前默认保存Ha图像和MDI图像的文件夹中文件顺序能够对应上
 %即相同(相近)日期的Ha和MDI图片在文件夹中的位序是相同的
-% ver:0.1.0 
-% 2020.08.16
 %%%
 clear variables;
 close all;
 %计时
 tic;
 t1=clock;
-path_ha='C:\Users\11054\Desktop\hmi_20190704\ha\jpg\';%保存ha图的路径
-path_mdi='C:\Users\11054\Desktop\hmi_20190704\hmi\';%HMI图片路径
+path_ha='C:\Users\11054\Desktop\hmi_20190704\ic\';%保存ha图的路径
+path_mdi='C:\Users\11054\Desktop\hmi_20190704\mdi\';%HMI图片路径
 path_save='C:\Users\11054\Desktop\hmi_20190704\out\';%存储结果
 extname_m='*.jpg';
 %读取文件列表
@@ -27,7 +25,7 @@ if filenum_ha~=filenum_hmi
     disp('Ha图像和MDI图像数量不匹配');
 else
     %生成类高斯结构元，用于后续在图像上绘制边框
-    unitsize=9;  %结构元尺寸
+    unitsize=5;  %结构元尺寸
     unit=zeros(unitsize);
     unit_zero=unitsize;
     unit_center=(unitsize-1)/2;
@@ -46,11 +44,13 @@ else
         t2=clock;
         ha=imread(strcat(path_ha,Direc_ha(i).name));
         mdi=imread(strcat(path_mdi,Direc_mdi(i).name));
-        %将彩色的MDI图像转为灰度图
-        mdi=rgb2gray(mdi);
-        %获取图像中日面的半径
+         %获取图像中日面的半径
         [h_ha,w_ha]=size(ha);
-        [h_mdi,w_mdi]=size(mdi);
+        [h_mdi,w_mdi,channal]=size(mdi);
+        %将彩色的MDI图像转为灰度图
+        if channal ~= 1
+            mdi=rgb2gray(mdi);
+        end
         %调整图像尺寸使其相一致
         if h_mdi>h_ha
             mdi=imresize(mdi,[h_ha,w_mdi]);
@@ -76,10 +76,12 @@ else
         ha_filter = imfilter(ha,gaus_kernel,'replicate');
         mdi_filter = imfilter(mdi,gaus_kernel,'replicate');
         %移除Ha图像的临边昏暗
-        [ha_ulc,~]=removelimb(ha_filter);
-        [mdi_ulc,~]=removelimb(mdi_filter);
+        %[ha_ulc,~]=removelimb(ha_filter);
+        %[mdi_ulc,~]=removelimb(mdi_filter);
         %figure();
         %imshow(ha_ulc);
+        ha_ulc=ha_filter;
+        mdi_ulc=mdi_filter;
         %下采样
         downsample_ha_ratio=h_ha/downsample_size; %将图像缩小到downsample_size
         downsample_mdi_ratio=h_mdi/downsample_size;
@@ -92,6 +94,11 @@ else
         [h_edge_mdi,w_edge_mdi]=size(ha_edge);
         r_range_ha=min(h_edge_ha,w_edge_ha);
         r_range_mdi=min(h_edge_mdi,w_edge_mdi);
+        figure();
+        subplot(1,2,1);
+        imshow(ha_edge);
+        subplot(1,2,2);
+        imshow(mdi_edge);
         %圆拟合，将ha图像中的日面与hmi图像中的日面缩放到相同大小
         [center_ha,radius_ha]=imfindcircles(ha_edge,[int16(r_range_ha*0.2),r_range_ha],'Method','TwoStage','Sensitivity',0.9);%TwoStage指定拟合方法为霍夫变换
         [center_mdi,radius_mdi]=imfindcircles(mdi_edge,[int16(r_range_mdi*0.2),r_range_mdi],'Method','TwoStage','Sensitivity',0.9);
@@ -104,8 +111,8 @@ else
             radius_mdi=radius_mdi*downsample_mdi_ratio;
             disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha)]);
             disp(['MDI图像中日面中心坐标为(',num2str(center_mdi(1)),',',num2str(center_mdi(2)),'),日面半径为',num2str(radius_mdi)]);
-            ha=ha_ulc;
-            mdi=mdi_ulc;
+            %ha=ha_ulc;
+            %mdi=mdi_ulc;
             %将日面中心移至画面的中心
             dy_ha=round((h_ha)/2-center_ha(1));
             dx_ha=round((w_ha)/2-center_ha(2));
@@ -113,7 +120,11 @@ else
             dy_mdi=round((h_mdi)/2-center_mdi(1));
             dx_mdi=round((w_mdi)/2-center_mdi(2));
             mdi=circshift(mdi,[dy_mdi,dx_mdi]);
-       
+            figure('name','平移结果');
+            subplot(1,2,1);
+            imshow(ha);
+            subplot(1,2,2);
+            imshow(mdi);
             %对Ha图像或MDI图像进行缩放，使两幅图像中日面半径相同，且日面中心位于画面中心
             if radius_mdi > radius_ha
                 %关于im_adjust的功能和用法参见函数的说明
@@ -121,10 +132,10 @@ else
             elseif radius_mdi < radius_ha
                 mdi=im_adjust(ha,mdi,radius_ha,radius_mdi);
             end
-            figure('name','处理后的Ha');
+            figure('name','处理后的图片');
             subplot(1,2,1);
             imshow(ha);
-            figure('name','处理后的MDI');
+            subplot(1,2,2);
             imshow(mdi);
             im_fusion(ha,mdi,strcat(path_save,Direc_ha(i).name(1:length(Direc_ha(i).name)-4),'fusion2.jpg'));
             R=ha_ulc;

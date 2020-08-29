@@ -1,8 +1,7 @@
-clear all; 
 close all;
 import matlab.io.*
-datapath_m='M:\Dataset\filament\smart\';  %读取fits文件的路径
-path_save='C:\Users\11054\Desktop\smart201110\jpg\';%保存fits图的路径
+datapath_m='C:\Users\11054\Desktop\hmi_20190704\mdi\';  %读取fits文件的路径
+path_save='C:\Users\11054\Desktop\hmi_20190704\mdi\';%保存fits图的路径
 extname_m='*.fits';
 Direc_m=dir(strcat(datapath_m,extname_m));  %（strcat：连接字符串函数）显示当前路径目录下的文件和文件夹
 %dir函数获得指定文件夹下的所有子文件夹和文件,并存放在在一种为文件结构体数组中.

@@ -3,7 +3,8 @@ disp('In fusion');
 range1=255;    
 [B0,~]=removelimb(ha);      % removelimb：自定义函数，使图变得明亮、平滑
 [B0_m,~]=removelimb(mdi);      % removelimb：自定义函数，使图变得明亮、平滑
-
+%B0=ha;
+%B0_m=mdi;
 %     figure,imshow(B0,[]);title('黑子图平滑');       % B0：figure2
 %     figure,imshow(B0_m,[]);title('磁图平滑');       % B0：figure2
 %     
@@ -29,7 +30,7 @@ for i=1:height
 end
 
 
-%     figure,imshow(B0_m,[]);title('B0_m')      % im_fits:原图，figure1
+figure,imshow(B0_m,[]);title('B0_m')      % im_fits:原图，figure1
 
 B0_m1=B0_m;
 for i=1:height_m
@@ -133,5 +134,4 @@ plot(y2,x2,'r.','MarkerSize',1e-16);         % 本影-正极-红色
 
 
 print(gcf,'-dpng',savepath);        % 保存图片
-close all;
 end

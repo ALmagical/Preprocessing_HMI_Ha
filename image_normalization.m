@@ -1,48 +1,25 @@
-function im_nor=image_normalization(B0,range1)
-%UNTITLED3 将图像归一化到0-4096
-%   此处显示详细说明
-oriImage =B0;
-% % grayImage = rgb2gray(oriImage);
-grayImage = B0;
-% figure;imshow(grayImage,[]);title('grayImage')         % grayImage：figure4
-% %  [height,width]=size(grayImage);
-% %     for i=1:height
-% %         for j=1:width
-% %             if grayImage(i,j)==0
-% %                 grayImage(i,j)=1024;
-% %             end
-% %         end
-% %     end
-% %     figure,imshow(grayImage,[]);
-% %     title('grayImage')
-% originalMinValue = double(min(min(grayImage)));
-% originalMaxValue = double(max(max(grayImage)));
-% originalRange = originalMaxValue - originalMinValue;
+function im_res=image_normalization(img,range)
+%%
+%将图像归一化到0-range
+%此处显示详细说明
+%%
+img_gray = img;
 
-% % Get a double image in the range 0 to +255
-% desiredMin = 0;
-% desiredMax =range;
-% desiredRange = desiredMax - desiredMin;
-% dblImageS255 = desiredRange * (double(grayImage) - originalMinValue) / originalRange + desiredMin;
-
-
-[m,n]=size(grayImage);
+[m,n]=size(img_gray);
 for i=1:m
     for j=1:n
-        d= grayImage(i,j);
+        d=img_gray(i,j);
         if d<=0
             d=0;
-        else if  d>1
+        elseif  d>1
                 d=1;
-            else  d=d;
-            end
         end
-        grayImage(i,j)=d;
+        img_gray(i,j)=d;
     end
 end
-% figure;imshow(grayImage,[]);      % grayImage：figure4
-dblImageS255 = range1 * (grayImage);
-im_nor=round(dblImageS255);     % round()：用于舍入到最接近的数
+% figure;imshow(img_gray,[]);      % grayImage：figure4
+img_duble = range * (img_gray);
+im_res=round(img_duble);     % round()：用于舍入到最接近的数
 % figure;imshow(im_nor,[]);title('im_nor')        % im_nor：figure4
 % im_nor=dblImageS255;
 % % % Get a double image in the range 0 to +1
