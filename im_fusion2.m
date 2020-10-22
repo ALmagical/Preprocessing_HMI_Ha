@@ -1,17 +1,19 @@
-function []=im_fusion2(ha,mdi,savepath,max_ha,r)
+function []=im_fusion2(ha,mdi,savepath,max_ha,r,threshold_neg,threshold_pos)
 disp('In fusion');
 ha=ha/max_ha;
+%对比度调整，动态调整应该比较好，固定的阈值会使得部分图片变得更加糟糕
+%ha=imadjust(ha,[0.35,0.95]);
 [h,w]=size(ha);        % size()：获取数组的行数和列数
 mdi_pos=mdi;
 mdi_neg=mdi;
 for i=1:h
     for j=1:w
-        if mdi(i,j)<0.9
+        if mdi(i,j)<threshold_neg
             mdi_neg(i,j)=1;
         else
             mdi_neg(i,j)=0;
         end
-        if mdi(i,j)>1.1
+        if mdi(i,j)>threshold_pos
             mdi_pos(i,j)=1;
         else
             mdi_pos(i,j)=0;

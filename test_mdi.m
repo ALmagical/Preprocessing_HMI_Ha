@@ -1,0 +1,1 @@
+img=imread('D:\Dataset\Filament\JPG2\MDI\20120703-06\hmi.M_720s.20120703_190000_TAI.1.magnetogram2.jpg');

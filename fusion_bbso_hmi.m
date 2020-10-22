@@ -1,7 +1,7 @@
 %%%
 %将时间差为60s的HA图像和MDI图像进行配准
 %配准：将对应图片中太阳圆面的中心调整为画面中心，并使图片中日面的半径的相同
-%对配准后的HA图像和HMI图像进行叠加   ？？？稍后将程序整合下
+%对配准后的HA图像和HMI图像进行叠加 
 %目前默认保存Ha图像和MDI图像的文件夹中文件顺序能够对应上
 %即相同(相近)日期的Ha和MDI图片在文件夹中的位序是相同的
 %%%
@@ -11,9 +11,9 @@ import matlab.io.*
 %计时
 tic;
 t1=clock;
-maindir_ha='D:\Dataset\Filament_test\BBSO\';
-maindir_mdi='D:\Dataset\Filament_test\MDI\';
-maindir_save='D:\Dataset\Filament_test\OUT\';
+maindir_ha='D:\Dataset\Filament_test2\BBSO\';
+maindir_mdi='D:\Dataset\Filament_test2\MDI\';
+maindir_save='D:\Dataset\Filament_test2\OUT\';
 subdir_ha=dir(maindir_ha);
 subdir_mdi=dir(maindir_mdi);
 numtot=0;  %记录处理的文件数
@@ -85,6 +85,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
 
         if filenum_ha~=filenum_mdi
             disp('Ha图像和MDI图像数量不匹配');
+            disp(['未处理',datapath_ha]);
         else
         %无用
         %生成类高斯结构元，用于后续在图像上绘制边框
@@ -152,6 +153,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
                     %subplot(1,2,2);
                     %imshow(mdi);
                     %对Ha图像或MDI图像进行缩放，使两幅图像中日面半径相同，且日面中心位于画面中心
+                    r=radius_ha;
                     if radius_mdi > radius_ha
                         %关于im_adjust的功能和用法参见函数的说明
                         ha=im_adjust(mdi,ha,radius_mdi,radius_ha);
@@ -167,7 +169,10 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
                     %imshow(mdi);
                     [ha_ulc,max_ha]=removelimb2(ha,r);
                     [mdi_ulc,max_mdi]=removelimb2(mdi,r);
-                    im_fusion2(ha_ulc,mdi_ulc,strcat(path_save,direc_ha(k).name(1:length(direc_ha(k).name)-4),'_fusion.jpg'),max_ha,r);
+                     %阈值，用于获取磁图中的正极区域和负极区域
+                    threshold_neg=0.7;
+                    threshold_pos=1.3;
+                    im_fusion2(ha_ulc,mdi_ulc,file_save,max_ha,r,threshold_neg,threshold_pos);
                     numtot=numtot+1;
                     disp(['第',num2str(numtot),'张图片处理花费时间：',num2str(toc),'s']);
                 end

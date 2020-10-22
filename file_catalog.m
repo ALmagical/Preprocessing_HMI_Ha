@@ -1,19 +1,25 @@
-%¸ù¾İHaÎÄ¼şÉ¸Ñ¡¶ÔÓ¦µÄMDIÎÄ¼ş
-%ÊÊÓÃÓÚBBSOµÄHaÍ¼ÏñºÍJSOCµÄMDIÍ¼Ïñ
-%HaÎÄ¼şÃû£¨Ê¾Àı£©:bbso_halph_fl_20130520_160102.jpg
-%MDIÎÄ¼şÃû£¨Ê¾Àı£©:hmi.M_720s.20101014_190000_TAI.1.magnetogram.jpg
-%É¸Ñ¡Ê±³öÏÖ´íÎó
+%å°†æ–‡ä»¶å¤åˆ¶åˆ°æ–°çš„ç›®å½•ç»“æ„ä¸‹
+%æºç›®å½•ç»“æ„ä¸ºå•ç‹¬çš„ä»¥å¹´æœˆæ—¥æ„æˆçš„æ–‡ä»¶å¤¹
+%æ–°ç›®å½•ç»“æ„ä¸º å¹´-æœˆ-æ—¥
+%å°†æ­¤åŠŸèƒ½å°è£…ä¸ºå‡½æ•°
+%å‚æ•°åŒ…å«æ–‡ä»¶å¤¹è·¯å¾„ï¼Œï¼ˆæ‰€è¯»å–çš„æ–‡ä»¶ç±»å‹ï¼Ÿï¼Ÿï¼Ÿä¸é™åˆ¶æ–‡ä»¶ç±»å‹ï¼Ÿï¼Ÿï¼Ÿï¼‰
+%åªç”¨æ¥å°†æ–‡ä»¶æŒ‡é’ˆè°ƒæ•´åˆ°æœ€åçš„ç›®å½•ä¸­ï¼Œä¸å¯¹æ–‡ä»¶è¿›è¡Œæ“ä½œï¼Œè¯·åœ¨ä¸»å‡½æ•°ä¸­è°ƒç”¨æ­¤å‡½æ•°ï¼Œå¹¶å®Œæˆå¯¹åº”çš„æ–‡ä»¶æ“ä½œ
+%å¤šçº§ç›®å½•çš„è¯å¯èƒ½éœ€è¦é€’å½’è°ƒç”¨
+%è·³è¿‡ç›®å½• .å’Œ ..
+%é€‚ç”¨äºBBSOçš„Haå›¾åƒå’ŒJSOCçš„MDIå›¾åƒ
+%Haæ–‡ä»¶åï¼ˆç¤ºä¾‹ï¼‰:bbso_halph_fl_20130520_160102.jpg
+%MDIæ–‡ä»¶åï¼ˆç¤ºä¾‹ï¼‰:hmi.M_720s.20101014_190000_TAI.1.magnetogram.jpg
 %%
 close all;
 import matlab.io.*
-%Ö÷Ä¿Â¼
-maindir_ha='D:\Dataset\Filament\JPG2\BBSO\';
+%ä¸»ç›®å½•
+maindir_ha='D:\Dataset\Filament\JPG\BBSO\';
 maindir_mdi='D:\Dataset\Filament\JPG2\MDI\';
 subdir_ha=dir(maindir_ha);
 subdir_mdi=dir(maindir_mdi);
 save_ha='D:\Dataset\Filament_test2\BBSO\';
 save_mdi='D:\Dataset\Filament_test2\MDI\';
-numtot=0;  %¼ÇÂ¼´¦ÀíµÄÎÄ¼şÊı
+numtot=0;  %è®°å½•å¤„ç†çš„æ–‡ä»¶æ•°
 extname='*.jpg'; 
 dirnum_ha=length(subdir_ha);
 dirnum_mdi=length(subdir_mdi);
@@ -25,19 +31,19 @@ while( (0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
     num_finish=0;
     if( isequal( subdir_ha( i ).name, '.' )||...
         isequal( subdir_ha( i ).name, '..')||...
-        ~subdir_ha( i ).isdir)               % Èç¹û²»ÊÇÄ¿Â¼ÔòÌø¹ı
+        ~subdir_ha( i ).isdir)               % å¦‚æœä¸æ˜¯ç›®å½•åˆ™è·³è¿‡
         continue;
     end
 
     if( isequal( subdir_mdi( j ).name, '.' )||...
         isequal( subdir_mdi( j ).name, '..')||...
-        ~subdir_mdi( j ).isdir)               % Èç¹û²»ÊÇÄ¿Â¼ÔòÌø¹ı
+        ~subdir_mdi( j ).isdir)               % å¦‚æœä¸æ˜¯ç›®å½•åˆ™è·³è¿‡
         continue;
     end
-    %ÅĞ¶ÏÎÄ¼ş¼ĞÃû³ÆÊÇ·ñÆ¥Åä
+    %åˆ¤æ–­æ–‡ä»¶å¤¹åç§°æ˜¯å¦åŒ¹é…
     if ((i<=dirnum_ha) && (j<=dirnum_mdi))
         false=0;
-        %ÎÄ¼ş¼ĞÃüÃû¸ñÊ½Ê¾Àı£º20101014-16
+        %æ–‡ä»¶å¤¹å‘½åæ ¼å¼ç¤ºä¾‹ï¼š20101014-16
         while subdir_ha(i).name ~= subdir_mdi(j).name
             name_ha=subdir_ha(i).name(1:8);
             name_mdi=subdir_mdi(j).name(1:8);
@@ -46,36 +52,36 @@ while( (0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
             elseif str2double(name_ha)>str2double(name_mdi)
                 j=j+1;
             else
-                disp(['ÎÄ¼ş¼ĞÃû³Æ²»Æ¥Åä',',HaÎÄ¼ş¼ĞÃû³ÆÎª:',subdir_ha(i)...
-                    ,'MDIÎÄ¼ş¼ĞÃû³ÆÎª:',subdir_mdi(j)],'¡£Çë¼ì²éÎÄ¼ş¼ĞÃû³Æ£¡');
+                disp(['æ–‡ä»¶å¤¹åç§°ä¸åŒ¹é…',',Haæ–‡ä»¶å¤¹åç§°ä¸º:',subdir_ha(i)...
+                    ,'MDIæ–‡ä»¶å¤¹åç§°ä¸º:',subdir_mdi(j)],'ã€‚è¯·æ£€æŸ¥æ–‡ä»¶å¤¹åç§°ï¼');
                 false=1;
             end
         end
         if (false==1)
             continue;
         end
-        datapath_ha=strcat(maindir_ha,subdir_ha(i).name,'\');  %¶ÁÈ¡HaÎÄ¼şµÄÂ·¾¶
-        datapath_mdi=strcat(maindir_mdi,subdir_mdi(i).name,'\');%¶ÁÈ¡MDIÎÄ¼şµÄÂ·¾¶
-        path_save_ha=strcat(save_ha,subdir_ha(i).name,'\');    %±£´æHaÎÄ¼şµÄÂ·¾¶  
-        path_save_mdi=strcat(save_mdi,subdir_mdi(i).name,'\'); %±£´æMDIÎÄ¼şµÄÂ·¾¶  
+        datapath_ha=strcat(maindir_ha,subdir_ha(i).name,'\');  %è¯»å–Haæ–‡ä»¶çš„è·¯å¾„
+        datapath_mdi=strcat(maindir_mdi,subdir_mdi(i).name,'\');%è¯»å–MDIæ–‡ä»¶çš„è·¯å¾„
+        path_save_ha=strcat(save_ha,subdir_ha(i).name,'\');    %ä¿å­˜Haæ–‡ä»¶çš„è·¯å¾„  
+        path_save_mdi=strcat(save_mdi,subdir_mdi(i).name,'\'); %ä¿å­˜MDIæ–‡ä»¶çš„è·¯å¾„  
 
-        %dirº¯Êı»ñµÃÖ¸¶¨ÎÄ¼ş¼ĞÏÂµÄËùÓĞ×ÓÎÄ¼ş¼ĞºÍÎÄ¼ş,²¢´æ·ÅÔÚÔÚÒ»ÖÖÎªÎÄ¼ş½á¹¹ÌåÊı×éÖĞ.
-        direc_ha=dir(strcat(datapath_ha,extname));  %ÏÔÊ¾µ±Ç°Â·¾¶Ä¿Â¼ÏÂµÄÎÄ¼şºÍÎÄ¼ş¼Ğ
+        %dirå‡½æ•°è·å¾—æŒ‡å®šæ–‡ä»¶å¤¹ä¸‹çš„æ‰€æœ‰å­æ–‡ä»¶å¤¹å’Œæ–‡ä»¶,å¹¶å­˜æ”¾åœ¨åœ¨ä¸€ç§ä¸ºæ–‡ä»¶ç»“æ„ä½“æ•°ç»„ä¸­.
+        direc_ha=dir(strcat(datapath_ha,extname));  %æ˜¾ç¤ºå½“å‰è·¯å¾„ç›®å½•ä¸‹çš„æ–‡ä»¶å’Œæ–‡ä»¶å¤¹
         direc_mdi=dir(strcat(datapath_mdi,extname));  
         filenum_ha=length(direc_ha);
         filenum_mdi=length(direc_mdi);
-        %ÎÄ¼ş¼ĞÎª¿ÕÔò½áÊø
+        %æ–‡ä»¶å¤¹ä¸ºç©ºåˆ™ç»“æŸ
         if filenum_ha==0
-            disp(['¡®',datapath_ha,'¡¯Îª¿ÕÎÄ¼ş¼Ğ¡£']);
-            j=j-1;       %¿ØÖÆmdiÎÄ¼ş¼Ğ±£³Ö²»±ä
+            disp(['â€˜',datapath_ha,'â€™ä¸ºç©ºæ–‡ä»¶å¤¹ã€‚']);
+            j=j-1;       %æ§åˆ¶mdiæ–‡ä»¶å¤¹ä¿æŒä¸å˜
             continue;
         end
         if filenum_mdi==0
-            disp(['¡®',datapath_mdi,'¡¯Îª¿ÕÎÄ¼ş¼Ğ¡£']);
+            disp(['â€˜',datapath_mdi,'â€™ä¸ºç©ºæ–‡ä»¶å¤¹ã€‚']);
             i=i-1;
             continue;
         end
-        %´æ´¢Â·¾¶ÏÂÎÄ¼ş¼Ğ²»´æÔÚÊ±´´½¨ÎÄ¼ş¼Ğ
+        %å­˜å‚¨è·¯å¾„ä¸‹æ–‡ä»¶å¤¹ä¸å­˜åœ¨æ—¶åˆ›å»ºæ–‡ä»¶å¤¹
         if ~exist(path_save_ha,'dir')
             mkdir(path_save_ha);
         end
@@ -90,26 +96,26 @@ while( (0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
                 name_mdi=direc_mdi(index_mdi).name;
                 savename_ha=strcat(path_save_ha,name_ha);
                 savename_mdi=strcat(path_save_mdi,name_mdi);
-                %ÎÄ¼şÒÑ¾­´æÔÚ
+                %æ–‡ä»¶å·²ç»å­˜åœ¨
                 if exist(savename_ha,'file')
                     index_ha=index_ha+1;
                 end
                 if exist(savename_mdi,'file')
                     index_mdi=index_mdi+1;
                 end
-                %HaÎÄ¼şºÍMDIÎÄ¼ş¾ù²»´æÔÚ
+                %Haæ–‡ä»¶å’ŒMDIæ–‡ä»¶å‡ä¸å­˜åœ¨
                 if ~exist(savename_ha,'file') || ~exist(savename_mdi,'file')
                     break;
                 end
             end
-            %½âÎöHaÎÄ¼şºÍMDIÎÄ¼şµÄÃû³ÆÒÔÈ·¶¨Ê±¼äºÍÈÕÆÚ
-            %HaÎÄ¼şÃû£¨Ê¾Àı£©:bbso_halph_fl_20130520_160102.jpg
-            %MDIÎÄ¼şÃû£¨Ê¾Àı£©:hmi.M_720s.20101014_190000_TAI.1.magnetogram.jpg
+            %è§£æHaæ–‡ä»¶å’ŒMDIæ–‡ä»¶çš„åç§°ä»¥ç¡®å®šæ—¶é—´å’Œæ—¥æœŸ
+            %Haæ–‡ä»¶åï¼ˆç¤ºä¾‹ï¼‰:bbso_halph_fl_20130520_160102.jpg
+            %MDIæ–‡ä»¶åï¼ˆç¤ºä¾‹ï¼‰:hmi.M_720s.20101014_190000_TAI.1.magnetogram.jpg
             data_ha=str2double(name_ha(15:22));
             data_mdi=str2double(name_mdi(12:19));
             time_ha=str2double(name_ha(24:29));
             time_mdi=str2double(name_mdi(21:26));
-            %½«HaºÍMDIÍ¼Æ¬µÄ»ñÈ¡Ê±¼äÏŞÖÆÔÚÕı¸º3·ÖÖÓ
+            %å°†Haå’ŒMDIå›¾ç‰‡çš„è·å–æ—¶é—´é™åˆ¶åœ¨æ­£è´Ÿ3åˆ†é’Ÿ
             if data_ha==data_mdi
                 if abs(time_ha-time_mdi)<=300
                     copyfile(strcat(datapath_ha,name_ha),path_save_ha);
@@ -128,8 +134,8 @@ while( (0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_mdi))
               index_mdi=index_mdi+1;
             end
         end
-        disp([datapath_ha,'ºÍ',datapath_mdi,'ÏÂµÄ',num2str(num_finish),'ÎÄ¼şÒÑ´¦ÀíÍê³É']);
+        disp([datapath_ha,'å’Œ',datapath_mdi,'ä¸‹çš„',num2str(num_finish),'æ–‡ä»¶å·²å¤„ç†å®Œæˆ']);
         numtot=numtot+num_finish;
      end
 end
-disp(['¹²¼Æ´¦Àí',num2str(numtot),'¸öÎÄ¼ş']);
+disp(['å…±è®¡å¤„ç†',num2str(numtot),'ä¸ªæ–‡ä»¶']);

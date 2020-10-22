@@ -1,8 +1,8 @@
 close all;
 import matlab.io.*
-maindir='C:\Users\11054\Desktop\BBSO\Fits\';
+maindir='D:\Dataset\Filament\FITS\BBSO\';
 subdir=dir(maindir);
-maindir_save='C:\Users\11054\Desktop\BBSO\Jpg\';%保存fits图的路径
+maindir_save='D:\Dataset\Filament\JPG2\BBSO\';%保存fits图的路径
 numtot=0;  %记录处理的文件数
 for i=1:length(subdir)
     if( isequal( subdir( i ).name, '.' )||...
@@ -23,28 +23,12 @@ for i=1:length(subdir)
     errornum=0;
     %batchsize=10;
     for Num=1:filetot
-        if exist(direc_m(Num).name,'file')
-            continue;
-        end
+        %if exist(direc_m(Num).name,'file')
+            %continue;
+        %end
         file_name = strcat(datapath_m,direc_m(Num).name);
-        fptr = fits.openFile(file_name);
-        info = fitsinfo(file_name);
-        data = fits.readImg(fptr);
-        [high,width]=size(data);
-        %data=data+32768;
-        %data_log=log(double(data));
-        data_log=data;
-        data_max=max(max(data_log));
-        data_min=min(min(data_log));
-        data_gray=double((data_log-data_min))/double((data_max-data_min));
-        data_gray=uint8(255*data_gray);
-        %data_gray=uint16(data);
-        %data_gray=data;
-        %镜像翻转原图像
-        final_img=flipud(data_gray);
-        imwrite(final_img,strcat(path_save,direc_m(Num).name(1:length(direc_m(Num).name)-4),'.jpg'),'jpg','Quality',100);
-        fits.closeFile(fptr); 
-        %close all;
+        file_save = strcat(path_save,direc_m(Num).name(1:length(direc_m(Num).name)-4),'.jpg');
+        fits2jpg_bbso_ha(file_name,file_save);
     end
     disp([datapath_m,'下的',num2str(filetot),'文件已处理完成']);
     disp(['其中成功',num2str(filetot-errornum),'个，失败',num2str(errornum),'个']);
