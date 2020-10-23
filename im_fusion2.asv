@@ -11,7 +11,6 @@ mdi_pos=zeros(h,w);
 mdi_neg=zeros(h,w);
 ha_light=zeros(h,w);
 ha_dark=zeros(h,w);
-%调整均值计算方法
 mdi_mean=mean(mdi,'all');
 ha_mean=mean(ha,'all');
 thresh_mdi_neg=mdi_mean*threshold_neg;

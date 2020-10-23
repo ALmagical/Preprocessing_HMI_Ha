@@ -13,8 +13,8 @@ N1=round(M/Level);
 BM=(max(B(:))-min(B(:)));
 Bmin=min(B(:));
 
-B1=(B-Bmin)/BM;
-[H,~]=imhist(B1,100);
+%B1=(B-Bmin)/BM;
+%[H,~]=imhist(B1,100);
 %[H,L1]=hist(B1(:),100);
 %T=find(H(20:50)==min(H(20:50)))+19;
 %figure('name','hist');
@@ -69,13 +69,14 @@ B0=(B./limb);
 %figure('name','B0');
 %imshow(B0);
 
-BW=disk(M,N,r);
+%BW=disk(M,N,r);
+BW=zeros(h,w);
 r1=1*r-5;
 r1=r1*r1;
 for i=1:M
     for j=1:N
-        if (i-M/2)^2+(j-M/2)^2>r1
-            BW(i,j)=0;
+        if (i-M/2)^2+(j-M/2)^2<r1
+            BW(i,j)=1;
         end
     end
 end
