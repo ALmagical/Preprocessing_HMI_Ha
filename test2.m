@@ -4,8 +4,8 @@ import matlab.io.*
 %计时
 tic;
 t1=clock;
-path_ha='D:\Dataset\Filament_test\BBSO\20120703-06\bbso_halph_fl_20120703_190100.jpg';
-path_mdi='C:\Users\11054\Desktop\hmi.M_45s.20120703_190045_TAI.2.magnetogram2.jpg';
+path_ha='D:\Dataset\Filament\JPG2\BBSO\2013\bbso_halph_fl_20130501_230103.jpg';
+path_mdi='D:\Dataset\Filament\JPG2\MDI\20130501-05\hmi.M_720s.20130501_230000_TAI.1.magnetogram2.jpg';
 path_save='D:\Dataset\Filament_test\OUT\';
 numtot=0;  %记录处理的文件数
 extname='*.jpg'; 

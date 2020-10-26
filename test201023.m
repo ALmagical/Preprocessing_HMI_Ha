@@ -4,9 +4,9 @@ import matlab.io.*
 %计时
 tic;
 t1=clock;
-path_ha='C:\Users\GXL\Desktop\test\bbso_halph_fl_20130501_230103.jpg';
-path_mdi='C:\Users\GXL\Desktop\test\hmi.M_720s.20130501_230000_TAI.1.magnetogram2.jpg';
-path_save='C:\Users\GXL\Desktop\test\';
+path_ha='C:\Users\11054\Desktop\test\bbso_halph_fl_20130501_230103.jpg';
+path_mdi='C:\Users\11054\Desktop\test\hmi.M_720s.20130501_230000_TAI.1.magnetogram2.jpg';
+path_save='C:\Users\11054\Desktop\test\';
 numtot=0;  %记录处理的文件数
 extname='*.jpg'; 
 downsample_size=256;     %计算日面半径时的将图像缩小到的高度大小

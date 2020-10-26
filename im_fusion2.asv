@@ -11,6 +11,7 @@ mdi_pos=zeros(h,w);
 mdi_neg=zeros(h,w);
 ha_light=zeros(h,w);
 ha_dark=zeros(h,w);
+%调整均值计算方法
 mdi_mean=mean(mdi,'all');
 ha_mean=mean(ha,'all');
 thresh_mdi_neg=mdi_mean*threshold_neg;
@@ -60,6 +61,10 @@ figure,imshow(mdi_neg,[]);title('磁图负极区域');          % mdi_neg:负极
 R=im2double(ha);
 G=R;
 B=R;
+Ha=zeros(h,w,3);
+Ha(:,:,1)=R;
+Ha(:,:,2)=G;
+Ha(:,:,3)=B;
 center_y=h/2;
 center_x=w/2;
 r=r-5;
@@ -90,6 +95,7 @@ result=zeros(h,w,3);
 result(:,:,1)=R;
 result(:,:,2)=G;
 result(:,:,3)=B;
-%figure('name','合成结果');
-%imshow(result);
+result1=imadd(result*0.5,Ha);
+figure('name','合成结果');
+imshow(result1);
 imwrite(result,savepath,'jpg','Quality',100);

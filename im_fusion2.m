@@ -9,15 +9,15 @@ disp('In fusion');
 [h,w]=size(ha);        % size()：获取数组的行数和列数
 mdi_pos=zeros(h,w);
 mdi_neg=zeros(h,w);
-ha_light=zeros(h,w);
-ha_dark=zeros(h,w);
+% ha_light=zeros(h,w);
+% ha_dark=zeros(h,w);
 %调整均值计算方法
 mdi_mean=mean(mdi,'all');
-ha_mean=mean(ha,'all');
+% ha_mean=mean(ha,'all');
 thresh_mdi_neg=mdi_mean*threshold_neg;
 thresh_mdi_pos=mdi_mean*threshold_pos;
-thresh_ha_light=ha_mean*1.7;
-thresh_ha_dark=ha_mean*1.3;
+% thresh_ha_light=ha_mean*1.7;
+% thresh_ha_dark=ha_mean*1.3;
 for i=1:h
     for j=1:w
         if mdi(i,j)<thresh_mdi_neg
@@ -29,24 +29,24 @@ for i=1:h
 end
 
 %ha
-for i=1:h
-    for j=1:w
-        if ha(i,j)<thresh_ha_dark
-            ha_dark(i,j)=1;
-        elseif ha(i,j)>thresh_ha_light
-            ha_light(i,j)=1;
-        end
-    end
-end
-figure();
-imshow(ha_dark);
-title('ha_dark');
-figure();
-imshow(ha_light);
-title('ha_light');
-figure,imshow(mdi,[]);title('将黑子图中的黑色部分变白');    
-figure,imshow(mdi_pos,[]);title('磁图正极区域');          % mdi_pos:正极
-figure,imshow(mdi_neg,[]);title('磁图负极区域');          % mdi_neg:负极
+% for i=1:h
+%     for j=1:w
+%         if ha(i,j)<thresh_ha_dark
+%             ha_dark(i,j)=1;
+%         elseif ha(i,j)>thresh_ha_light
+%             ha_light(i,j)=1;
+%         end
+%     end
+% end
+%figure();
+%imshow(ha_dark);
+%title('ha_dark');
+%figure();
+%imshow(ha_light);
+%title('ha_light');
+%figure,imshow(mdi,[]);title('将黑子图中的黑色部分变白');    
+%figure,imshow(mdi_pos,[]);title('磁图正极区域');          % mdi_pos:正极
+%figure,imshow(mdi_neg,[]);title('磁图负极区域');          % mdi_neg:负极
 
 %B0_m=bwareaopen(B0_m,20);       % 去掉小面积，面积小于20的连通区域直接去掉
 %B0_m1=bwareaopen(B0_m1,20);
@@ -61,6 +61,11 @@ figure,imshow(mdi_neg,[]);title('磁图负极区域');          % mdi_neg:负极
 R=im2double(ha);
 G=R;
 B=R;
+
+%Ha=zeros(h,w,3);
+%Ha(:,:,1)=R;
+%Ha(:,:,2)=R;
+%Ha(:,:,3)=R;
 center_y=h/2;
 center_x=w/2;
 r=r-5;
@@ -91,6 +96,7 @@ result=zeros(h,w,3);
 result(:,:,1)=R;
 result(:,:,2)=G;
 result(:,:,3)=B;
+result=imadd(result,Ha);
 %figure('name','合成结果');
-%imshow(result);
+%imshow(result1);
 imwrite(result,savepath,'jpg','Quality',100);

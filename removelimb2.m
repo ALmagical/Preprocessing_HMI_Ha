@@ -70,7 +70,7 @@ B0=(B./limb);
 %imshow(B0);
 
 %BW=disk(M,N,r);
-BW=zeros(h,w);
+BW=zeros(M,N);
 r1=1*r-5;
 r1=r1*r1;
 for i=1:M
