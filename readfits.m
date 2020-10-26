@@ -1,5 +1,4 @@
-clear all; 
-close all;
+ close all;
 
 datapath_m='C:\Users\11054\Desktop\hmi_20190704\mdi\';  %读取fits文件的路径
 magneticjpg='C:\Users\11054\Desktop\hmi_20190704\mdi\';%保存fits图的路径

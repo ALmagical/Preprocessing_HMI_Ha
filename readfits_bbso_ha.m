@@ -1,8 +1,8 @@
 close all;
 import matlab.io.*
-maindir='D:\Dataset\Filament\FITS\BBSO\';
+maindir='D:\Dataset\FITS\BBSO\';
 subdir=dir(maindir);
-maindir_save='D:\Dataset\Filament\JPG2\BBSO\';%保存fits图的路径
+maindir_save='D:\Dataset\JPG\BBSO\';%保存fits图的路径
 numtot=0;  %记录处理的文件数
 for i=1:length(subdir)
     if( isequal( subdir( i ).name, '.' )||...
