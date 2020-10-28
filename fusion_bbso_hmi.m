@@ -11,11 +11,11 @@ import matlab.io.*
 %计时
 tic;
 t1=clock;
-maindir_ha='D:\Dataset\Filament_test2\BBSO\';
-maindir_hmi='D:\Dataset\Filament_test2\MDI\';
-maindir_save_fusion='D:\Dataset\Filament_test2\OUT\FUSION\';
-maindir_save_ha='D:\Dataset\Filament_test2\OUT\Ha\';
-maindir_save_hmi='D:\Dataset\Filament_test2\OUT\HMI\';
+maindir_ha='D:\Dataset\Train_data\BBSO\';
+maindir_hmi='D:\Dataset\Train_data\HMI\';
+maindir_save_fusion='D:\Dataset\Train_data\OUT\FUSION\';
+maindir_save_ha='D:\Dataset\Train_data\OUT\Ha\';
+maindir_save_hmi='D:\Dataset\Train_data\OUT\HMI\';
 subdir_ha=dir(maindir_ha);
 subdir_hmi=dir(maindir_hmi);
 numtot=0;  %记录处理的文件数
@@ -43,10 +43,10 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
     %判断文件夹名称是否匹配
     if ((i<=dirnum_ha) && (j<=dirnum_hmi))
         false=0;
-        %文件夹命名格式示例：20101014-16
+        %文件夹命名格式示例：2010
         while subdir_ha(i).name ~= subdir_hmi(j).name
-            name_ha=subdir_ha(i).name(1:8);
-            name_hmi=subdir_hmi(j).name(1:8);
+            name_ha=subdir_ha(i).name;
+            name_hmi=subdir_hmi(j).name;
             if str2double(name_ha)<str2double(name_hmi)
                 i=i+1;
             elseif str2double(name_ha)>str2double(name_hmi)
@@ -109,9 +109,9 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                 file_save_fusion=strcat(path_save_fusion,direc_ha(k).name(1:length(direc_ha(k).name)-4),'_fusion.jpg');
                 file_save_ha=strcat(path_save_ha,direc_ha(k).name(1:length(direc_ha(k).name)-4),'.jpg');
                 file_save_hmi=strcat(path_save_hmi,direc_hmi(k).name(1:length(direc_ha(k).name)-4),'.jpg');
-                if exist(file_save_fusion,'file')
-                    continue;
-                end
+%               if exist(file_save_fusion,'file')
+%                   continue;
+%               end
                  %获取图像中日面的半径
                 [h_ha,w_ha]=size(ha);
                 [h_hmi,w_hmi,c_hmi]=size(hmi);
@@ -188,9 +188,9 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     hmi_ulc=hmi_ulc/max_hmi;
                     ha_ulc=im2uint8(ha_ulc);
                     hmi_ulc=im2uint8(hmi_ulc);
-                    im_fusion2(ha_ulc,hmi_ulc,file_save_fusion,max_ha,r,threshold_neg,threshold_pos);
-                    imwrite(ha_ulc,file_save_ha,'jpg','Quality',100);
-                    imwrite(hmi_ulc,file_save_hmi,'jpg','Quality',100);
+                    im_fusion2(ha_ulc,hmi_ulc,file_save_fusion,r,threshold_neg,threshold_pos);
+                    imwrite(ha,file_save_ha,'jpg','Quality',100);
+                    imwrite(hmi,file_save_hmi,'jpg','Quality',100);
                     numtot=numtot+1;
                     disp(['第',num2str(numtot),'张图片处理花费时间：',num2str(toc),'s']);
                 end

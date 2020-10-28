@@ -17,6 +17,6 @@ img_edge=imbinarize(img_low);
 r_range=min(h_edge,w_edge);
 %调试时用
 %figure();
-%imshow(ha_edge);
+%imshow(img_edge);
 %圆拟合，找出图像中存在的圆面的半径和圆心
 [center,radius]=imfindcircles(img_edge,[int16(r_range*0.2),r_range],'Method','TwoStage','Sensitivity',0.9);%TwoStage指定拟合方法为霍夫变换
