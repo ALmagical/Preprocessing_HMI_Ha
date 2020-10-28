@@ -7,12 +7,12 @@
 close all;
 import matlab.io.*
 %主目录
-maindir_ha='D:\Dataset\Filament\JPG2\BBSO\';
-maindir_hmi='D:\Dataset\Filament\JPG2\MDI\';
+maindir_ha='D:\Dataset\JPG\BBSO\';
+maindir_hmi='D:\Dataset\JPG\HMI\';
 subdir_ha=dir(maindir_ha);
 subdir_hmi=dir(maindir_hmi);
-save_ha='D:\Dataset\Filament_test2\BBSO\';
-save_hmi='D:\Dataset\Filament_test2\MDI\';
+save_ha='D:\Dataset\Train_data\BBSO\';
+save_hmi='D:\Dataset\Train_data\HMI\';
 numtot=0;  %记录处理的文件数
 extname='*.jpg'; 
 dirnum_ha=length(subdir_ha);
