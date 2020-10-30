@@ -1,0 +1,10 @@
+maindir_bbso='D:\Dataset\Test\BBSO\';
+maindir_hmi='D:\Dataset\Test\HMI\';
+extname_bbso='.fts';
+extname_hmi='.fits';
+filetype_bbso='BBSO';
+filetype_hmi='HMI';
+save_path_bbso='D:\Dataset\Test\File_filter\BBSO\';
+save_path_hmi='D:\Dataset\Test\File_filter\HMI\';
+file_filter(maindir_bbso,maindir_hmi,extname_bbso,extname_hmi,...
+    filetype_bbso,filetype_hmi,save_path_bbso,save_path_hmi);

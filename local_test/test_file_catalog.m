@@ -1,0 +1,10 @@
+% maindir='D:\Dataset\FITS\HMI\';
+% save_path='D:\Dataset\Test\HMI\';
+% extname='.fits';
+% filetype='HMI';
+% file_catalog(maindir,extname,filetype,save_path);
+maindir='D:\Dataset\FITS\BBSO\';
+save_path='D:\Dataset\Test\BBSO\';
+extname='.fts';
+filetype='BBSO';
+file_catalog(maindir,extname,filetype,save_path);
