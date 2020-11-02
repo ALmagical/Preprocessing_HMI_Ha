@@ -97,6 +97,8 @@ result(:,:,1)=R;
 result(:,:,2)=G;
 result(:,:,3)=B;
 result=imadd(result*0.35,Ha);
+%调整对比度或者gamma
+result=imadjust(result,[],[],1.5);
 %figure('name','合成结果');
 %imshow(result1);
 imwrite(result,savepath,'jpg','Quality',100);

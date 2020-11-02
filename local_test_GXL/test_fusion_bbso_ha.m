@@ -11,11 +11,13 @@ import matlab.io.*
 %计时
 tic;
 t1=clock;
-maindir_ha='D:\Dataset\Train_data\BBSO\';
-maindir_hmi='D:\Dataset\Train_data\HMI\';
-maindir_save_fusion='D:\Dataset\Train_data\OUT\FUSION\';
-maindir_save_ha='D:\Dataset\Train_data\OUT\Ha\';
-maindir_save_hmi='D:\Dataset\Train_data\OUT\HMI\';
+maindir_ha='C:\Users\11054\Desktop\test\source\BBSO\';
+maindir_hmi='C:\Users\11054\Desktop\test\source\HMI\';
+maindir_save_fusion='C:\Users\11054\Desktop\test\out_test\FUSION\';
+maindir_save_ha='C:\Users\11054\Desktop\test\out_test\Ha\';
+maindir_save_hmi='C:\Users\11054\Desktop\test\out_test\HMI\';
+maindir_save_ha_ori='C:\Users\11054\Desktop\test\out_test\ORI\Ha\';
+maindir_save_hmi_ori='C:\Users\11054\Desktop\test\out_test\ORI\HMI\';
 subdir_ha=dir(maindir_ha);
 subdir_hmi=dir(maindir_hmi);
 numtot=0;  %记录处理的文件数
@@ -67,6 +69,8 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
         path_save_fusion=strcat(maindir_save_fusion,subdir_ha(i).name,'\');
         path_save_ha=strcat(maindir_save_ha,subdir_ha(i).name,'\');
         path_save_hmi=strcat(maindir_save_hmi,subdir_hmi(i).name,'\');
+        path_save_ha_ori=strcat(maindir_save_ha_ori,subdir_ha(i).name,'\');
+        path_save_hmi_ori=strcat(maindir_save_hmi_ori,subdir_hmi(i).name,'\');
         
         %dir函数获得指定文件夹下的所有子文件夹和文件,并存放在在一种为文件结构体数组中.
         direc_ha=dir(strcat(datapath_ha,extname_ha));  %显示当前路径目录下的文件和文件夹
@@ -94,6 +98,12 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
         if ~exist(path_save_hmi,'dir')
             mkdir(path_save_hmi);
         end
+        if ~exist(path_save_ha_ori,'dir')
+            mkdir(path_save_ha_ori);
+        end
+        if ~exist(path_save_hmi_ori,'dir')
+            mkdir(path_save_hmi_ori);
+        end
         if filenum_ha~=filenum_hmi
             disp('Ha图像和MDI图像数量不匹配');
             disp(['未处理',datapath_ha]);
@@ -105,8 +115,22 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
             for k=1:filenum_ha
                 tic;
                 t2=clock;
-                ha=imread(strcat(datapath_ha,direc_ha(k).name));
-                hmi=imread(strcat(datapath_hmi,direc_hmi(k).name));
+                [isfail_ha,ha,radius_ha_fits]=test_fits2jpg_bbso_ha(strcat(datapath_ha,...
+                    direc_ha(k).name),strcat(path_save_ha_ori,...
+                    direc_ha(k).name(1:length(direc_ha(k).name)-4),'.jpg'));
+                [isfail_hmi,hmi]=test_fits2jpg_hmi(strcat(datapath_hmi,...
+                    direc_hmi(k).name),strcat(path_save_hmi_ori,...
+                    direc_hmi(k).name(1:length(direc_hmi(k).name)-5),'.jpg'));
+                if isfail_ha==1
+                    disp([direc_ha(k).name,'文件格式转换时出错']);
+                    continue;
+                end
+                if isfail_hmi==1
+                    disp([direc_hmi(k).name,'文件格式转换时出错']);
+                    continue;
+                end
+                %ha=imread(strcat(datapath_ha,direc_ha(k).name));
+                %hmi=imread(strcat(datapath_hmi,direc_hmi(k).name));
                 file_save_fusion=strcat(path_save_fusion,direc_ha(k).name(1:length(direc_ha(k).name)-4),'_fusion.jpg');
                 file_save_ha=strcat(path_save_ha,direc_ha(k).name(1:length(direc_ha(k).name)-4),'.jpg');
                 file_save_hmi=strcat(path_save_hmi,direc_hmi(k).name(1:length(direc_ha(k).name)-4),'.jpg');
@@ -151,7 +175,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     radius_ha=radius_ha*downsample_ha_ratio;
                     center_hmi=center_hmi*downsample_mdi_ratio;
                     radius_hmi=radius_hmi*downsample_mdi_ratio;
-                    disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha)]);
+                    disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha),' fits文件记录的日面半径为',num2str(radius_ha_fits)]);
                     disp(['MDI图像中日面中心坐标为(',num2str(center_hmi(1)),',',num2str(center_hmi(2)),'),日面半径为',num2str(radius_hmi)]);
                     %将日面中心移至画面的中心
                     dy_ha=round((h_ha)/2-center_ha(1));

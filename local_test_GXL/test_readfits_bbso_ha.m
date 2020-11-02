@@ -1,7 +1,7 @@
 import matlab.io.*
-maindir='C:\Users\11054\Desktop\test\source\';
+maindir='C:\Users\11054\Desktop\test\source\BBSO\';
 subdir=dir(maindir);
-maindir_save='C:\Users\11054\Desktop\test\out\';%保存fits图的路径
+maindir_save='C:\Users\11054\Desktop\test\BBSO\';%保存fits图的路径
 numtot=0;  %记录处理的文件数
 for i=1:length(subdir)
     if( isequal( subdir( i ).name, '.' )||...
