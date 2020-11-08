@@ -11,15 +11,18 @@ import matlab.io.*
 %计时
 tic;
 t1=clock;
-maindir_ha='D:\Dataset\Train_data\BBSO\';
-maindir_hmi='D:\Dataset\Train_data\HMI\';
-maindir_save_fusion='D:\Dataset\Train_data\OUT\FUSION\';
-maindir_save_ha='D:\Dataset\Train_data\OUT\Ha\';
-maindir_save_hmi='D:\Dataset\Train_data\OUT\HMI\';
+maindir_ha='D:\Dataset\Test\File_filter\BBSO\';
+maindir_hmi='D:\Dataset\Test\File_filter\HMI\';
+maindir_save_fusion='D:\Dataset\Test\OUT_TEST\FUSION\';
+maindir_save_ha='D:\Dataset\Test\OUT_TEST\BBSO\';
+maindir_save_hmi='D:\Dataset\Test\OUT_TEST\HMI\';
+maindir_save_ha_ori='D:\Dataset\Test\OUT_TEST\ORI\BBSO\';
+maindir_save_hmi_ori='D:\Dataset\Test\OUT_TEST\ORI\HMI\';
 subdir_ha=dir(maindir_ha);
 subdir_hmi=dir(maindir_hmi);
 numtot=0;  %记录处理的文件数
-extname='*.jpg'; 
+extname_ha='*.fts'; 
+extname_hmi='*.fits';
 dirnum_ha=length(subdir_ha);
 dirnum_hmi=length(subdir_hmi);
 downsample_size=256;     %计算日面半径时的将图像缩小到的高度大小
@@ -66,10 +69,12 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
         path_save_fusion=strcat(maindir_save_fusion,subdir_ha(i).name,'\');
         path_save_ha=strcat(maindir_save_ha,subdir_ha(i).name,'\');
         path_save_hmi=strcat(maindir_save_hmi,subdir_hmi(i).name,'\');
+        path_save_ha_ori=strcat(maindir_save_ha_ori,subdir_ha(i).name,'\');
+        path_save_hmi_ori=strcat(maindir_save_hmi_ori,subdir_hmi(i).name,'\');
         
         %dir函数获得指定文件夹下的所有子文件夹和文件,并存放在在一种为文件结构体数组中.
-        direc_ha=dir(strcat(datapath_ha,extname));  %显示当前路径目录下的文件和文件夹
-        direc_hmi=dir(strcat(datapath_hmi,extname));  
+        direc_ha=dir(strcat(datapath_ha,extname_ha));  %显示当前路径目录下的文件和文件夹
+        direc_hmi=dir(strcat(datapath_hmi,extname_hmi));  
         filenum_ha=length(direc_ha);
         filenum_hmi=length(direc_hmi);
         %文件夹为空则结束
@@ -93,6 +98,12 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
         if ~exist(path_save_hmi,'dir')
             mkdir(path_save_hmi);
         end
+        if ~exist(path_save_ha_ori,'dir')
+            mkdir(path_save_ha_ori);
+        end
+        if ~exist(path_save_hmi_ori,'dir')
+            mkdir(path_save_hmi_ori);
+        end
         if filenum_ha~=filenum_hmi
             disp('Ha图像和MDI图像数量不匹配');
             disp(['未处理',datapath_ha]);
@@ -104,8 +115,22 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
             for k=1:filenum_ha
                 tic;
                 t2=clock;
-                ha=imread(strcat(datapath_ha,direc_ha(k).name));
-                hmi=imread(strcat(datapath_hmi,direc_hmi(k).name));
+                [isfail_ha,ha]=fits2jpg_bbso_ha(strcat(datapath_ha,...
+                    direc_ha(k).name),strcat(path_save_ha_ori,...
+                    direc_ha(k).name(1:length(direc_ha(k).name)-4),'.jpg'));
+                [isfail_hmi,hmi]=fits2jpg_hmi(strcat(datapath_hmi,...
+                    direc_hmi(k).name),strcat(path_save_hmi_ori,...
+                    direc_hmi(k).name(1:length(direc_hmi(k).name)-5),'.jpg'));
+                if isfail_ha==1
+                    disp([direc_ha(k).name,'文件格式转换时出错']);
+                    continue;
+                end
+                if isfail_hmi==1
+                    disp([direc_hmi(k).name,'文件格式转换时出错']);
+                    continue;
+                end
+                %ha=imread(strcat(datapath_ha,direc_ha(k).name));
+                %hmi=imread(strcat(datapath_hmi,direc_hmi(k).name));
                 file_save_fusion=strcat(path_save_fusion,direc_ha(k).name(1:length(direc_ha(k).name)-4),'_fusion.jpg');
                 file_save_ha=strcat(path_save_ha,direc_ha(k).name(1:length(direc_ha(k).name)-4),'.jpg');
                 file_save_hmi=strcat(path_save_hmi,direc_hmi(k).name(1:length(direc_ha(k).name)-4),'.jpg');
@@ -179,15 +204,18 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     %imshow(ha);
                     %subplot(1,2,2);
                     %imshow(mdi);
-                    [ha_ulc,max_ha]=removelimb2(ha,r);
-                    [hmi_ulc,max_hmi]=removelimb2(hmi,r);
+                    %test
+                    %[ha_ulc,max_ha]=removelimb2(ha,r);
+                    %[hmi_ulc,max_hmi]=removelimb2(hmi,r);
                      %阈值，用于获取磁图中的正极区域和负极区域
                     threshold_neg=0.4;
                     threshold_pos=1.8;
-                    ha_ulc=ha_ulc/max_ha;
-                    hmi_ulc=hmi_ulc/max_hmi;
-                    ha_ulc=im2uint8(ha_ulc);
-                    hmi_ulc=im2uint8(hmi_ulc);
+%                     ha_ulc=ha_ulc/max_ha;
+%                     hmi_ulc=hmi_ulc/max_hmi;
+%                     ha_ulc=im2uint8(ha_ulc);
+%                     hmi_ulc=im2uint8(hmi_ulc);
+                    ha_ulc=ha;
+                    hmi_ulc=hmi;
                     im_fusion2(ha_ulc,hmi_ulc,file_save_fusion,r,threshold_neg,threshold_pos);
                     imwrite(ha,file_save_ha,'jpg','Quality',100);
                     imwrite(hmi,file_save_hmi,'jpg','Quality',100);
