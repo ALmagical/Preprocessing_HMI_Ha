@@ -21,21 +21,23 @@ function []=test_fits2jpg_bbso_ha(file_read,file_save)
             radius=fits_keywords{i,2};
         end
     end
-    disp(['center_x:',num2str(center_x),'  center_y:',num2str(center_y),...
-        '  radius_sun:',num2str(radius)]);
+    %disp(['center_x:',num2str(center_x),'  center_y:',num2str(center_y),...
+    %    '  radius_sun:',num2str(radius)]);
     %[high,width]=size(data);
     data_max=max(max(data));
     data_min=min(min(data));
     data_gray=double((data-data_min))/double((data_max-data_min));
-    data_gray=uint8(255*data_gray);
+    %data_gray=uint8(255*data_gray);
     %镜像翻转原图像
-    final_img=flipud(data_gray);
+    final_img=flipud(data);
     %img_max=max(final_img(:));
     %img_min=min(final_img(:));
-    img_adj=imadjust(final_img,[],[],2);
+    %img_adj=imadjust(final_img,[],[],2);
     %img_max_adj=max(img_adj(:));
     %img_min_adj=min(img_adj(:));
     %figure();
     %imshow(img_adj);
+    %img_adj=test_im_normalization(double(final_img));
+    img_adj=mat2gray(data);
     imwrite(img_adj,file_save,'jpg','Quality',100);
     fits.closeFile(fptr); 

@@ -1,5 +1,5 @@
 import matlab.io.*
-maindir='C:\Users\GXL\Desktop\test\';
+maindir='C:\Users\GXL\Desktop\test\fits\BBSO\';
 subdir=dir(maindir);
 maindir_save='C:\Users\GXL\Desktop\test\';%保存fits图的路径
 numtot=0;  %记录处理的文件数
@@ -27,7 +27,7 @@ for i=1:length(subdir)
         %end
         file_name = strcat(datapath_m,direc_m(Num).name);
         file_save = strcat(path_save,direc_m(Num).name(1:length(direc_m(Num).name)-4),'.jpg');
-        testfits2jpg_bbso_ha(file_name,file_save);
+        test_fits2jpg_bbso_ha(file_name,file_save);
     end
     disp([datapath_m,'下的',num2str(filetot),'文件已处理完成']);
     disp(['其中成功',num2str(filetot-errornum),'个，失败',num2str(errornum),'个']);
