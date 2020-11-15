@@ -63,7 +63,7 @@ parfor i=1:file_num
                     continue;
                 end
                 %存储路径下文件夹不存在时创建文件夹
-                if ~exist(path_save,'dir')
+                if ~isfolder(path_save)
                     mkdir(path_save);
                 end
                 %复制文件到目标路径
