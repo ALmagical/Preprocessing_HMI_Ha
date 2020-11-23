@@ -53,11 +53,13 @@ end
 %B0_m1=bwareaopen(B0_m1,20);
 
 %滤波后影响结果
-%filter_size=[7,7];
+filter_size=[3,3];
 %ha=wiener2(ha,filter_size);       % wiener2：为了去噪
 %mdi_neg=wiener2(mdi_neg,filter_size);       % wiener2：为了去噪
 %mdi_pos=wiener2(mdi_pos,filter_size);       % wiener2：为了去噪
-
+ha=medfilt2(ha,filter_size);
+mdi_neg=medfilt2(mdi_neg,filter_size);
+mdi_pos=medfilt2(mdi_pos,filter_size);
 % 叠加
 R=im2double(ha);
 G=R;

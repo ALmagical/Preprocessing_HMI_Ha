@@ -56,7 +56,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                 j=j+1;
             else
                 disp(['文件夹名称不匹配',',Ha文件夹名称为:',subdir_ha(i)...
-                    ,'MDI文件夹名称为:',subdir_hmi(j)],'。请检查文件夹名称！');
+                    ,'HMI文件夹名称为:',subdir_hmi(j)],'。请检查文件夹名称！');
                 false=1;
             end
         end
@@ -105,7 +105,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
             mkdir(path_save_hmi_ori);
         end
         if filenum_ha~=filenum_hmi
-            disp('Ha图像和MDI图像数量不匹配');
+            disp('Ha图像和HMI图像数量不匹配');
             disp(['未处理',datapath_ha]);
         else
         %无用
@@ -176,7 +176,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     center_hmi=center_hmi*downsample_ratio;
                     radius_hmi=radius_hmi*downsample_ratio;
                     disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha)]);
-                    disp(['MDI图像中日面中心坐标为(',num2str(center_hmi(1)),',',num2str(center_hmi(2)),'),日面半径为',num2str(radius_hmi)]);
+                    disp(['HMI图像中日面中心坐标为(',num2str(center_hmi(1)),',',num2str(center_hmi(2)),'),日面半径为',num2str(radius_hmi)]);
                     %将日面中心移至画面的中心
                     dy_ha=round((h_ha)/2-center_ha(1));
                     dx_ha=round((w_ha)/2-center_ha(2));
