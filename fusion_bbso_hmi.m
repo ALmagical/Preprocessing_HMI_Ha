@@ -112,7 +112,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
         %生成类高斯结构元，用于后续在图像上绘制边框
         %unit=cross_unit(5);
 
-            for k=1:filenum_ha
+            parfor k=1:filenum_ha
                 tic;
                 t2=clock;
                 [isfail_ha,ha]=fits2jpg_bbso_ha(strcat(datapath_ha,...
@@ -144,18 +144,17 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                 if c_hmi ~= 1
                     hmi=rgb2gray(hmi);
                 end
-                %调整图像尺寸使其相一致
-                if h_hmi>h_ha
-                    hmi=imresize(hmi,[h_ha,w_hmi]);
-                elseif h_hmi<h_ha
-                    ha=imresize(ha,[h_hmi,w_ha]);
-                end
-                [h_hmi,w_hmi]=size(hmi);
-                [h_ha,w_ha]=size(ha);
-                if w_hmi>w_ha
-                    hmi=imresize(hmi,[h_hmi,w_ha]);
-                elseif w_hmi<w_ha
+                 %调整图像尺寸使其相一致
+                if h_hmi>h_ha && w_hmi>w_ha
+                    hmi=imresize(hmi,[h_ha,w_ha]);
+                elseif h_hmi<h_ha && w_hmi<w_ha
+                    ha=imresize(ha,[h_hmi,w_hmi]);
+                elseif h_hmi>h_ha && w_hmi<w_ha
+                    hmi=imrsize(hmi,[h_ha,w_hmi]);
                     ha=imresize(ha,[h_ha,w_hmi]);
+                elseif h_hmi<h_ha &&w_hmi>w_ha
+                    hmi=imrsize(hmi,[h_hmi,w_ha]);
+                    ha=imresize(ha,[h_hmi,w_ha]);
                 end
                 %figure('name','Ha');
                 %imshow(ha);
@@ -169,12 +168,13 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
 
                 if isempty(center_ha)==0 && isempty(center_hmi)==0
                     %求出原图中日面的半径
-                    downsample_ha_ratio=h_ha/downsample_size;
-                    downsample_mdi_ratio=h_hmi/downsample_size;
-                    center_ha=center_ha*downsample_ha_ratio;
-                    radius_ha=radius_ha*downsample_ha_ratio;
-                    center_hmi=center_hmi*downsample_mdi_ratio;
-                    radius_hmi=radius_hmi*downsample_mdi_ratio;
+                    %ha和hmi图像已经缩放到相同尺寸，因此下采样的比例也是相同的
+                    %downsample_ha_ratio=h_ha/downsample_size;
+                    downsample_ratio=h_hmi/downsample_size;
+                    center_ha=center_ha*downsample_ratio;
+                    radius_ha=radius_ha*downsample_ratio;
+                    center_hmi=center_hmi*downsample_ratio;
+                    radius_hmi=radius_hmi*downsample_ratio;
                     disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha)]);
                     disp(['MDI图像中日面中心坐标为(',num2str(center_hmi(1)),',',num2str(center_hmi(2)),'),日面半径为',num2str(radius_hmi)]);
                     %将日面中心移至画面的中心
@@ -205,22 +205,24 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     %subplot(1,2,2);
                     %imshow(mdi);
                     %test
-                    %[ha_ulc,max_ha]=removelimb2(ha,r);
-                    %[hmi_ulc,max_hmi]=removelimb2(hmi,r);
+                    [ha_ulc,max_ha]=removelimb2(ha,r);
+                    [hmi_ulc,max_hmi]=removelimb2(hmi,r);
                      %阈值，用于获取磁图中的正极区域和负极区域
                     threshold_neg=0.4;
                     threshold_pos=1.8;
-%                     ha_ulc=ha_ulc/max_ha;
-%                     hmi_ulc=hmi_ulc/max_hmi;
+                    ha_ulc=ha_ulc/max_ha;
+                    hmi_ulc=hmi_ulc/max_hmi;
 %                     ha_ulc=im2uint8(ha_ulc);
 %                     hmi_ulc=im2uint8(hmi_ulc);
-                    ha_ulc=ha;
-                    hmi_ulc=hmi;
-                    im_fusion2(ha_ulc,hmi_ulc,file_save_fusion,r,threshold_neg,threshold_pos);
+%                     ha_ulc=ha;
+%                     hmi_ulc=hmi;
+                    result_fusion=im_fusion2(ha_ulc,hmi_ulc,r,threshold_neg,threshold_pos);
                     imwrite(ha,file_save_ha,'jpg','Quality',100);
                     imwrite(hmi,file_save_hmi,'jpg','Quality',100);
-                    numtot=numtot+1;
-                    disp(['第',num2str(numtot),'张图片处理花费时间：',num2str(toc),'s']);
+                    imwrite(result_fusion,file_save_fusion,'jpg','Quality',100);
+                    %numtot影响并行计算
+                    %numtot=numtot+1;
+                    %disp(['第',num2str(numtot),'张图片处理花费时间：',num2str(toc),'s']);
                 end
             end
         end

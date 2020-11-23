@@ -2,17 +2,18 @@
 %将输入数据类型调整为uint8
 %%%%
 %%
-function []=im_fusion2(ha,mdi,savepath,r,threshold_neg,threshold_pos)
-disp('In fusion');
+function [result]=im_fusion2(ha,mdi,r,threshold_neg,threshold_pos)
+%disp('In fusion');
 %对比度调整，动态调整应该比较好，固定的阈值会使得部分图片变得更加糟糕                 
-%ha=imadjust(ha,[0.35,0.95]);
+ha=imadjust(ha,[],[],1.5);
 [h,w]=size(ha);        % size()：获取数组的行数和列数
 mdi_pos=zeros(h,w);
 mdi_neg=zeros(h,w);
 % ha_light=zeros(h,w);
 % ha_dark=zeros(h,w);
 %调整均值计算方法
-mdi_mean=mean(mdi,'all');
+%不计算0
+mdi_mean=mean2(mdi(mdi>0));
 % ha_mean=mean(ha,'all');
 thresh_mdi_neg=mdi_mean*threshold_neg;
 thresh_mdi_pos=mdi_mean*threshold_pos;
@@ -96,9 +97,9 @@ result=zeros(h,w,3);
 result(:,:,1)=R;
 result(:,:,2)=G;
 result(:,:,3)=B;
-result=imadd(result*0.2,Ha);
+result=imadd(result*0.2,Ha*0.8);
 %调整对比度或者gamma
-result=imadjust(result,[0.2,0.8],[],0.8);
+result=imadjust(result,[],[],0.7);
 %figure('name','合成结果');
 %imshow(result1);
-imwrite(result,savepath,'jpg','Quality',100);
+%imwrite(result,savepath,'jpg','Quality',100);

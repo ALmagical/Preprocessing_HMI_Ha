@@ -25,7 +25,7 @@ extname_ha='*.fts';
 extname_hmi='*.fits';
 dirnum_ha=length(subdir_ha);
 dirnum_hmi=length(subdir_hmi);
-downsample_size=256;     %计算日面半径时的将图像缩小到的高度大小
+downsample_size=256;     %计算日面半径时的将图像缩小到的尺度大小
 i=0;
 j=0;
 while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
@@ -115,7 +115,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
             for k=1:filenum_ha
                 tic;
                 t2=clock;
-                [isfail_ha,ha,radius_ha_fits]=test_fits2jpg_bbso_ha(strcat(datapath_ha,...
+                [isfail_ha,ha]=test_fits2jpg_bbso_ha(strcat(datapath_ha,...
                     direc_ha(k).name),strcat(path_save_ha_ori,...
                     direc_ha(k).name(1:length(direc_ha(k).name)-4),'.jpg'));
                 [isfail_hmi,hmi]=test_fits2jpg_hmi(strcat(datapath_hmi,...
@@ -145,17 +145,16 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     hmi=rgb2gray(hmi);
                 end
                 %调整图像尺寸使其相一致
-                if h_hmi>h_ha
-                    hmi=imresize(hmi,[h_ha,w_hmi]);
-                elseif h_hmi<h_ha
-                    ha=imresize(ha,[h_hmi,w_ha]);
-                end
-                [h_hmi,w_hmi]=size(hmi);
-                [h_ha,w_ha]=size(ha);
-                if w_hmi>w_ha
-                    hmi=imresize(hmi,[h_hmi,w_ha]);
-                elseif w_hmi<w_ha
+                if h_hmi>h_ha && w_hmi>w_ha
+                    hmi=imresize(hmi,[h_ha,w_ha]);
+                elseif h_hmi<h_ha && w_hmi<w_ha
+                    ha=imresize(ha,[h_hmi,w_hmi]);
+                elseif h_hmi>h_ha && w_hmi<w_ha
+                    hmi=imrsize(hmi,[h_ha,w_hmi]);
                     ha=imresize(ha,[h_ha,w_hmi]);
+                elseif h_hmi<h_ha &&w_hmi>w_ha
+                    hmi=imrsize(hmi,[h_hmi,w_ha]);
+                    ha=imresize(ha,[h_hmi,w_ha]);
                 end
                 %figure('name','Ha');
                 %imshow(ha);
@@ -169,13 +168,14 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
 
                 if isempty(center_ha)==0 && isempty(center_hmi)==0
                     %求出原图中日面的半径
-                    downsample_ha_ratio=h_ha/downsample_size;
-                    downsample_mdi_ratio=h_hmi/downsample_size;
-                    center_ha=center_ha*downsample_ha_ratio;
-                    radius_ha=radius_ha*downsample_ha_ratio;
-                    center_hmi=center_hmi*downsample_mdi_ratio;
-                    radius_hmi=radius_hmi*downsample_mdi_ratio;
-                    disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha),' fits文件记录的日面半径为',num2str(radius_ha_fits)]);
+                    %ha和hmi图像已经缩放到相同尺寸，因此下采样的比例也是相同的
+                    %downsample_ha_ratio=h_ha/downsample_size;
+                    downsample_ratio=h_hmi/downsample_size;
+                    center_ha=center_ha*downsample_ratio;
+                    radius_ha=radius_ha*downsample_ratio;
+                    center_hmi=center_hmi*downsample_ratio;
+                    radius_hmi=radius_hmi*downsample_ratio;
+                    disp(['Ha图像中日面中心坐标为(',num2str(center_ha(1)),',',num2str(center_ha(2)),'),日面半径为',num2str(radius_ha)]);
                     disp(['MDI图像中日面中心坐标为(',num2str(center_hmi(1)),',',num2str(center_hmi(2)),'),日面半径为',num2str(radius_hmi)]);
                     %将日面中心移至画面的中心
                     dy_ha=round((h_ha)/2-center_ha(1));
@@ -204,18 +204,20 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     %imshow(ha);
                     %subplot(1,2,2);
                     %imshow(mdi);
-                    [ha_ulc,max_ha]=removelimb2(ha,r);
-                    [hmi_ulc,max_hmi]=removelimb2(hmi,r);
+                    [ha_ulc,max_ha]=test_removelimb(ha,r);
+                    [hmi_ulc,max_hmi]=test_removelimb(hmi,r);
                      %阈值，用于获取磁图中的正极区域和负极区域
                     threshold_neg=0.4;
                     threshold_pos=1.8;
                     ha_ulc=ha_ulc/max_ha;
                     hmi_ulc=hmi_ulc/max_hmi;
-                    ha_ulc=im2uint8(ha_ulc);
-                    hmi_ulc=im2uint8(hmi_ulc);
-                    test_im_fusion2(ha_ulc,hmi_ulc,file_save_fusion,r,threshold_neg,threshold_pos);
+%                     ha_ulc=im2uint8(ha_ulc);
+%                     hmi_ulc=im2uint8(hmi_ulc);
+                    
+                    im_fusion=test_im_fusion2(ha_ulc,hmi_ulc,r,threshold_neg,threshold_pos);
                     imwrite(ha,file_save_ha,'jpg','Quality',100);
                     imwrite(hmi,file_save_hmi,'jpg','Quality',100);
+                    imwrite(im_fusion,file_save_fusion,'jpg','Quality',100);
                     numtot=numtot+1;
                     disp(['第',num2str(numtot),'张图片处理花费时间：',num2str(toc),'s']);
                 end

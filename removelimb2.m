@@ -10,8 +10,8 @@ Level=1;
 M1=round(M/Level);
 N1=round(M/Level);
 
-BM=(max(B(:))-min(B(:)));
-Bmin=min(B(:));
+% BM=(max(B(:))-min(B(:)));
+% Bmin=min(B(:));
 
 %B1=(B-Bmin)/BM;
 %[H,~]=imhist(B1,100);
@@ -42,15 +42,14 @@ Bmin=min(B(:));
 B0=imresize(B,[M1,N1]); %产生小图，缩小Level倍
 
 an=round(M1/2); %图像半宽
+an=round(an*sqrt(3));
 
 imP = ImToPolar (B0, 0, 1, an, an); %转为极坐标
 
 %figure('name','imp');
 %imshow(imP);
 
-mp=median(imP'); %用中值滤波计算临边昏暗曲线
-
-%  mp=smooth(mp,3); %9点平滑一下 
+mp=median(imP,2); %用中值滤波计算临边昏暗曲线
 
 cut=meshgrid(mp,1:an);
 cut=cut';
@@ -63,8 +62,9 @@ imR = PolarToIm (cut, 0, 1,an,an); %转回直角坐标系
 %imshow(imR);
 
 limb=imresize(imR,[M N],'bicubic');%limb
-
-B0=(B./limb);
+im_mean=mean2(limb);
+B0=B-limb+im_mean;
+%B0=(B./limb);
 
 %figure('name','B0');
 %imshow(B0);

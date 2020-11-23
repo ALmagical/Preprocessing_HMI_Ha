@@ -2,8 +2,8 @@ function [B0,dx,dy,r]=removelimb(B)
 
 B=double(B);
 
-figure('name','input');
-imshow(uint8(B));
+% figure('name','input');
+% imshow(uint8(B));
 [M,N]=size(B);
 %Level=round((M/1024));
 Level=1;
