@@ -5,8 +5,8 @@
 %目前默认保存Ha图像和MDI图像的文件夹中文件顺序能够对应上
 %即相同(相近)日期的Ha和MDI图片在文件夹中的位序是相同的
 %%%
-clear variables;
-close all;
+%clear variables;
+%close all;
 import matlab.io.*
 %计时
 tic;

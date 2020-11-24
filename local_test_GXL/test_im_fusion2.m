@@ -3,9 +3,9 @@
 %%%%
 %%
 function [result]=test_im_fusion2(ha,mdi,r,threshold_neg,threshold_pos)
-disp('In fusion');
+%disp('In fusion');
 %对比度调整，动态调整应该比较好，固定的阈值会使得部分图片变得更加糟糕                 
-ha=imadjust(ha,[],[],1.5);
+ha=imadjust(ha,[],[],1.3);
 [h,w]=size(ha);        % size()：获取数组的行数和列数
 mdi_pos=zeros(h,w);
 mdi_neg=zeros(h,w);
@@ -51,15 +51,24 @@ end
 
 %B0_m=bwareaopen(B0_m,20);       % 去掉小面积，面积小于20的连通区域直接去掉
 %B0_m1=bwareaopen(B0_m1,20);
+%形态学操作
+unit=cross_unit(7);
+% mdi_neg_1=imopen(mdi_neg,unit);
+% mdi_pos_1=imopen(mdi_pos,unit);
 
+% unit=cross_unit(21);
+mdi_neg_1=imclose(mdi_neg,unit);
+mdi_pos_1=imclose(mdi_pos,unit);
+figure,imshow(mdi_neg_1);
+figure,imshow(mdi_pos_1);
 %滤波后影响结果
 filter_size=[3,3];
 % ha=wiener2(ha,filter_size);       % wiener2：为了去噪
 % mdi_neg=wiener2(mdi_neg,filter_size);       % wiener2：为了去噪
 % mdi_pos=wiener2(mdi_pos,filter_size);       % wiener2：为了去噪
 ha=medfilt2(ha,filter_size);
-mdi_neg=medfilt2(mdi_neg,filter_size);
-mdi_pos=medfilt2(mdi_pos,filter_size);
+% mdi_neg=medfilt2(mdi_neg_1,filter_size);
+% mdi_pos=medfilt2(mdi_pos_1,filter_size);
 % 叠加
 R=ha;
 G=R;
@@ -102,7 +111,7 @@ result(:,:,3)=B;
 result=imadd(result*0.2,Ha*0.8);
 
 %调整对比度或者gamma
-result=imadjust(result,[],[],0.7);
+result=imadjust(result,[0.1,0.85],[]);
 %a=1;
 %figure('name','合成结果');
 %imshow(result1);
