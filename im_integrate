@@ -1,3 +1,6 @@
+%%%
+%拼接多幅图像
+%%
 clear variables;
 close all;
 import matlab.io.*
@@ -6,8 +9,8 @@ tic;
 t1=clock;
 maindir_ha='D:\Dataset\Test\OUT_TEST\BBSO\';
 maindir_hmi='D:\Dataset\Test\OUT_TEST\HMI\';
-maindir_fu='D:\Dataset\Test\OUT_TEST\FUSION\';
-maindir_save_fusion='D:\Dataset\Test\OUT_TEST\CAT\';
+maindir_fu='D:\Dataset\Test\OUT\FUSION\';
+maindir_save_fusion='D:\Dataset\Test\OUT\CAT\';
 subdir_ha=dir(maindir_ha);
 subdir_hmi=dir(maindir_hmi);
 subdir_fu=dir(maindir_fu);
@@ -102,9 +105,6 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi) &&...
         disp('图像数量不匹配');
         disp(['未处理',datapath_ha,';',datapath_hmi,';',datapath_fu]);
     else
-        %无用
-        %生成类高斯结构元，用于后续在图像上绘制边框
-        %unit=cross_unit(5);
         
         parfor m=1:filenum_ha
             tic;
@@ -124,7 +124,7 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi) &&...
             fusion=imread(strcat(datapath_fu,direc_fu(m).name));
 %             a=ones(20,2048,3);
 %             a=im2uint8(a);
-            result=cat(2,Ha,Hmi,fusion);
+            result=cat(2,Hmi,Ha,fusion);
             imwrite(result,file_save_fusion,'jpg','Quality',100);
         end
     end
