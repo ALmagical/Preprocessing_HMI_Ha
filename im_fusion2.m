@@ -110,7 +110,7 @@ result(:,:,2)=G;
 result(:,:,3)=B;
 result=imadd(result*0.2,Ha*0.8);
 %调整对比度或者gamma
-result=imadjust(result,[0.1,0.85],[]);
+result=imadjust(result,[0.1,0.9],[]);
 %figure('name','合成结果');
 %imshow(result1);
 %imwrite(result,savepath,'jpg','Quality',100);

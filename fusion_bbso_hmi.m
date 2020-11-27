@@ -224,8 +224,8 @@ while((0<=i) && (i<dirnum_ha) && (j>=0) && (j<dirnum_hmi))
                     %numtot=numtot+1;
                     %disp(['第',num2str(numtot),'张图片处理花费时间：',num2str(toc),'s']);
                 end
-                disp([datapath_ha,'处理完成，花费时间：',num2str(toc),'s']);
             end
+            disp([datapath_ha,'处理完成，花费时间：',num2str(toc),'s']);
         end
     end
 end
