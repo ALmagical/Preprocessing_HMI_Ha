@@ -61,7 +61,7 @@ try
     %imshow(imR);
     
     limb=imresize(imR,[M N],'bicubic');%limb
-    m=mean2(limb);
+    m=mean2(limb(limb>0));
     B0=B-limb+m;
     % m1=mean2(cut);
     % im_1=imP-cut+m1;

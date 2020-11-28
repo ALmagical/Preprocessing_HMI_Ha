@@ -109,8 +109,12 @@ result(:,:,1)=R;
 result(:,:,2)=G;
 result(:,:,3)=B;
 result=imadd(result*0.2,Ha*0.8);
+%RGB格式转为HSV格式
+res_hsv=rgb2hsv(result);
 %调整对比度或者gamma
-result=imadjust(result,[0.1,0.9],[]);
+%只对HSV图像中的灰度信息进行调整
+res_hsv(:,:,3)=imadjust(res_hsv(:,:,3),[0.3,0.85],[],0.5);
+result=hsv2rgb(res_hsv);
 %figure('name','合成结果');
 %imshow(result1);
 %imwrite(result,savepath,'jpg','Quality',100);

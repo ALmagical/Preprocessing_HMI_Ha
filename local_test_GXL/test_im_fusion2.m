@@ -59,16 +59,16 @@ unit=cross_unit(7);
 % unit=cross_unit(21);
 mdi_neg_1=imclose(mdi_neg,unit);
 mdi_pos_1=imclose(mdi_pos,unit);
-figure,imshow(mdi_neg_1);
-figure,imshow(mdi_pos_1);
+% figure,imshow(mdi_neg_1);
+% figure,imshow(mdi_pos_1);
 %滤波后影响结果
 filter_size=[3,3];
 % ha=wiener2(ha,filter_size);       % wiener2：为了去噪
 % mdi_neg=wiener2(mdi_neg,filter_size);       % wiener2：为了去噪
 % mdi_pos=wiener2(mdi_pos,filter_size);       % wiener2：为了去噪
 ha=medfilt2(ha,filter_size);
-% mdi_neg=medfilt2(mdi_neg_1,filter_size);
-% mdi_pos=medfilt2(mdi_pos_1,filter_size);
+mdi_neg=medfilt2(mdi_neg_1,filter_size);
+mdi_pos=medfilt2(mdi_pos_1,filter_size);
 % 叠加
 R=ha;
 G=R;
@@ -109,9 +109,13 @@ result(:,:,1)=R;
 result(:,:,2)=G;
 result(:,:,3)=B;
 result=imadd(result*0.2,Ha*0.8);
-
+% figure,imshow(result);
+%RGB格式转为HSV格式
+res_hsv=rgb2hsv(result);
 %调整对比度或者gamma
-result=imadjust(result,[0.1,0.85],[]);
+%只对HSV图像中的灰度信息进行调整
+res_hsv(:,:,3)=imadjust(res_hsv(:,:,3),[0.3,0.85],[],0.5);
+result=hsv2rgb(res_hsv);
 %a=1;
 %figure('name','合成结果');
 %imshow(result1);

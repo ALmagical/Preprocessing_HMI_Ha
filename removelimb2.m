@@ -62,7 +62,7 @@ imR = PolarToIm (cut, 0, 1,an,an); %转回直角坐标系
 %imshow(imR);
 
 limb=imresize(imR,[M N],'bicubic');%limb
-im_mean=mean2(limb);
+im_mean=mean2(limb(limb>0));
 B0=B-limb+im_mean;
 %B0=(B./limb);
 
