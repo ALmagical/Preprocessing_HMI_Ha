@@ -67,6 +67,7 @@ filter_size=[3,3];
 % mdi_neg=wiener2(mdi_neg,filter_size);       % wiener2：为了去噪
 % mdi_pos=wiener2(mdi_pos,filter_size);       % wiener2：为了去噪
 ha=medfilt2(ha,filter_size);
+filter_size=[7,7];
 mdi_neg=medfilt2(mdi_neg_1,filter_size);
 mdi_pos=medfilt2(mdi_pos_1,filter_size);
 % 叠加
@@ -114,7 +115,7 @@ result=imadd(result*0.2,Ha*0.8);
 res_hsv=rgb2hsv(result);
 %调整对比度或者gamma
 %只对HSV图像中的灰度信息进行调整
-res_hsv(:,:,3)=imadjust(res_hsv(:,:,3),[0.3,0.85],[],0.5);
+res_hsv(:,:,3)=imadjust(res_hsv(:,:,3),[0.2,0.85],[],0.5);
 result=hsv2rgb(res_hsv);
 %a=1;
 %figure('name','合成结果');
