@@ -91,12 +91,20 @@ while( (0<i) && (i<=dirnum_a) && (0<j) && (j<=dirnum_b))
         try
             %判断文件扩展名
             if extname_a~=-1
+                if length(file_extname_a)~=length(extname_a)
+                    i=i+1;
+                    continue;
+                end
                 if file_extname_a~=extname_a
                     i=i+1;
                     continue;
                 end
             end
-            if extname_b~=-1
+            if extname_b~=-1 
+                if length(file_extname_b)~=length(extname_b)
+                    j=j+1;
+                    continue;
+                end
                 if file_extname_b~=extname_b
                     j=j+1;
                     continue;
@@ -128,7 +136,7 @@ while( (0<i) && (i<=dirnum_a) && (0<j) && (j<=dirnum_b))
             if filetype_a=="BBSO"
                 date_a=str2double(name_a(15:22));
                 time_a=str2double(name_a(24:29));
-            elseif filetype=="HMI"
+            elseif filetype_a=="HMI"
                 date_a=str2double(name_a(12:19));
                 time_a=str2double(name_a(21:26));
             else
@@ -181,9 +189,10 @@ while( (0<i) && (i<=dirnum_a) && (0<j) && (j<=dirnum_b))
                     j=j+1;
                 end
             end
-        catch
+        catch message_error
              warning([path_a,'处理失败。']);
              warning([path_b,'处理失败。']);
+             error(message_error.message);
         end
         %disp([path_a,'和',path_b,'已处理完成']);
         %numtot=numtot+num_finish;

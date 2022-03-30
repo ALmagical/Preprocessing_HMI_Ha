@@ -14,7 +14,7 @@ function [isfail,img_adj]=test_fits2jpg_bbso_ha(file_read,file_save)
         data_min=min(min(data));
         data_gray=double((data-data_min))/double((data_max-data_min));
         data_gray=uint8(255*data_gray);
-        %镜像翻转原图像
+        %镜像翻转原图�?
         final_img=flipud(data_gray);
         img_adj=final_img;
         %data_16=uint16(data);
@@ -22,8 +22,10 @@ function [isfail,img_adj]=test_fits2jpg_bbso_ha(file_read,file_save)
         %figure();
         %imshow(img_adj);
         %img_adj=test_im_try(img_adj);
+        %img_adj=imresize(img_adj,0.5);
         imwrite(img_adj,file_save,'jpg','Quality',100,'BitDepth',8);
-        %16位的图像查看时还需要压缩到8位，因此没有必要使用16位的图像
+        %imwrite(img_adj,file_save,'jp2');
+        %16位的图像查看时还�?要压缩到8位，因此没有必要使用16位的图像
         %imwrite(data_16,file_save,'png','BitDepth',16);
         fits.closeFile(fptr);
     catch erro

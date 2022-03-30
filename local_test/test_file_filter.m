@@ -1,10 +1,10 @@
-maindir_bbso='D:\Dataset\Test\BBSO\';
-maindir_hmi='D:\Dataset\Test\HMI\';
-extname_bbso='.fts';
-extname_hmi='.fits';
+maindir_bbso='D:\Dataset\Filament_detect\Label\';
+maindir_hmi='D:\Dataset\Filament_detect\Label\';
+extname_bbso='.jpg';
+extname_hmi='.json';
 filetype_bbso='BBSO';
-filetype_hmi='HMI';
-save_path_bbso='D:\Dataset\Test\File_filter\BBSO\';
-save_path_hmi='D:\Dataset\Test\File_filter\HMI\';
+filetype_hmi='BBSO';
+save_path_bbso='D:\Dataset\Filament_detect\Filter\';
+save_path_hmi='D:\Dataset\Filament_detect\Filter\';
 file_filter(maindir_bbso,maindir_hmi,extname_bbso,extname_hmi,...
     filetype_bbso,filetype_hmi,save_path_bbso,save_path_hmi);

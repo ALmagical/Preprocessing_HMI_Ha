@@ -22,7 +22,7 @@ for i=1:length(subdir)
     disp(['正在处理',datapath_m,'下的文件，文件数共计',num2str(filetot)]);
     errornum=0;
     %batchsize=10;
-    for Num=1:filetot
+    parfor Num=1:filetot
         %if exist(direc_m(Num).name,'file')
             %continue;
         %end
